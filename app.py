@@ -1,13 +1,18 @@
 import streamlit as st
 import time
 
-# 질문 리스트
+# 새로운 질문 리스트
 questions = [
-    "1. AI 도구를 얼마나 자주 사용하시나요?",
-    "2. 다양한 AI 도구를 사용해 본 경험이 있나요?",
-    "3. AI를 활용하여 업무 효율성을 높인 경험이 있나요?",
-    "4. AI의 한계와 잠재적 위험성에 대해 얼마나 이해하고 있나요?",
-    "5. AI 기술의 최신 트렌드를 얼마나 자주 확인하시나요?"
+    "1. 다양한 AI 도구(ChatGPT, DALL-E, Midjourney 등)를 사용해 본 경험이 있나요?",
+    "2. AI를 활용하여 업무나 학습 효율성을 높인 경험이 있나요?",
+    "3. AI의 한계와 잠재적 위험성에 대해 얼마나 이해하고 있나요?",
+    "4. AI 기술의 최신 트렌드를 얼마나 자주 확인하시나요?",
+    "5. AI 윤리와 관련된 이슈에 대해 얼마나 관심을 가지고 있나요?",
+    "6. AI를 이용한 창작 활동(글쓰기, 이미지 생성 등)을 해본 적이 있나요?",
+    "7. AI 관련 뉴스나 연구 논문을 얼마나 자주 읽으시나요?",
+    "8. AI 기술이 미래 사회에 미칠 영향에 대해 얼마나 생각해 보셨나요?",
+    "9. AI 프로그래밍이나 머신러닝에 대한 기초 지식이 있나요?",
+    "10. AI를 활용한 개인 프로젝트나 업무 프로젝트를 진행해 본 적이 있나요?"
 ]
 
 # 답변 옵션
@@ -23,13 +28,13 @@ def calculate_score(answers):
     return sum([options.index(answer) + 1 for answer in answers])
 
 def get_level(score):
-    if score <= 5:
+    if score <= 10:
         return "초보자 레벨"
-    elif score <= 10:
-        return "기초 레벨"
-    elif score <= 15:
-        return "중급 레벨"
     elif score <= 20:
+        return "기초 레벨"
+    elif score <= 30:
+        return "중급 레벨"
+    elif score <= 40:
         return "고급 레벨"
     else:
         return "전문가 레벨"
@@ -59,16 +64,16 @@ def main():
         st.session_state.page = 0
 
     if st.session_state.page == 0:
-        st.write("테스트를 시작하려면 '시작' 버튼을 클릭하세요. (제한 시간: 2분)")
+        st.write("테스트를 시작하려면 '시작' 버튼을 클릭하세요. (제한 시간: 5분)")
         st.button("시작", on_click=start_test)
 
     elif 1 <= st.session_state.page <= len(questions):
         # 시간 제한 체크
         elapsed_time = time.time() - st.session_state.start_time
-        remaining_time = max(120 - int(elapsed_time), 0)
+        remaining_time = max(300 - int(elapsed_time), 0)  # 5분 = 300초
         st.info(f"남은 시간: {remaining_time}초")
         
-        if elapsed_time > 120:
+        if elapsed_time > 300:
             st.warning("제한 시간이 초과되었습니다. 결과 페이지로 이동합니다.")
             st.session_state.page = len(questions) + 1
         else:
